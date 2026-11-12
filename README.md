@@ -101,6 +101,33 @@ curl http://localhost:8000/health
 poetry run pytest
 ```
 
+## Generating Traces and Exporting Spans
+
+With Phoenix and the API running, run the scripted conversations:
+
+```bash
+poetry run python scripts/run_queries.py
+```
+
+The script sends 14 conversations (34 queries) through `/chat`. Each conversation uses its own session id, `run-<run_id>-<name>`, so it appears as one session in Phoenix. User turns are fixed in advance and do not react to the agent's replies. Some conversations are written to succeed and some to hit the agent's limits (unsupported airports, a budget below every fare, a request to book a hotel), so the user frustration evaluation has both outcomes to classify. A manifest of the run, with every turn and reply, is written to `exports/run_<run_id>.json`.
+
+Export the run's spans with the Phoenix CLI. `px` reads its endpoint and project from `.env.phoenix`, which `px setup` creates:
+
+```bash
+px setup --no-input --endpoint http://localhost:6006 --project travel-agent
+px span list exports/spans_run_<run_id>.json --since <run start time> --limit 5000 --include-annotations
+```
+
+The committed export `exports/spans_run_20261112T033521Z.json` holds 400 spans from 34 traces in 14 sessions: 53 LLM spans, 19 tool spans (13 `search_flights`, 6 `duckduckgo_search`), and 328 chain spans for the LangGraph steps.
+
+### Findings from the traces
+
+- **The agent blamed the wrong cause.** For "Los Angeles to Tokyo under $200", the agent chose Haneda (HND), which the mock data doesn't support. The tool returned `no_results` with "No flight data for HND", but the agent opened with "there are no flights … for under $200" before offering Narita (NRT). Its retry used NRT and silently dropped the budget. The trace shows the tool's exact message next to the agent's reply, which makes the mismatch obvious. A fix would be to list the supported airports in the tool description.
+- **The agent overrode the tool with its own knowledge.** For "nonstop flights from Seattle to Lisbon", `search_flights` returned two nonstop options. When the user doubted them, the agent called the tool again, ran a web search, and then said there were no nonstop flights, contradicting the tool's data. Here the mock data is unrealistic, so the user was right. The trace shows the agent's answer is not grounded in the tool output.
+- **Follow-ups reuse earlier results.** For the Chicago to London budget follow-ups ("under $2,000", then "under $3,000"), the agent filtered the earlier results from conversation memory instead of calling the tool again. That saves tool calls but relies on the earlier search having returned every option.
+- **One question can trigger several tool calls.** "Compare economy and business" made two `search_flights` calls, one for each cabin.
+- **Relative dates are ambiguous.** On Wednesday, Nov 11, "next Friday" was resolved to Nov 20, not Nov 13.
+
 ## Project Structure
 
 ```
