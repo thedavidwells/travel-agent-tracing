@@ -1,0 +1,313 @@
+{
+  "run_id": "20261112T033521Z",
+  "sessions": [
+    {
+      "session_id": "run-20261112T033521Z-bali-unsupported-airport",
+      "scenario": "bali-unsupported-airport",
+      "turns": 3,
+      "span_id": "c07441da9ed94a2c",
+      "label": "frustrated",
+      "expected": "frustrated",
+      "explanation": "The assistant could not search flights to Bali, and the user reacted with disbelief (\"Seriously?\"), then called the assistant \"useless\" and gave up with \"Forget it.\" The issue was never resolved, so the user left frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-chicago-london-group-budget",
+      "scenario": "chicago-london-group-budget",
+      "turns": 3,
+      "span_id": "3c4928885dea706e",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user asked for flights, set a $2,000 budget, then asked about under $3,000. The assistant answered each request reasonably, though the $3,000 reply was just the full list again. The user's \"Hmm, okay\" reads as neutral and exploring options, not complaining. The conversation ends with no sign of frustration, sarcasm, or giving up, and the user appears to be refining a search normally."
+    },
+    {
+      "session_id": "run-20261112T033521Z-jfk-london-business-round-trip",
+      "scenario": "jfk-london-business-round-trip",
+      "turns": 2,
+      "span_id": "f20c421a3f4e0f4f",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user asked a follow-up clarifying question (which is nonstop and the total for both), and the assistant answered directly. The user shows no complaints, repetition of a failed request, sarcasm, or distrust. The conversation ends without any sign of frustration. (The assistant's data has oddities, like a 4h44m nonstop JFK-London flight on TAP, but the user did not express any concern.)"
+    },
+    {
+      "session_id": "run-20261112T033521Z-lisbon-hotel-booking-limit",
+      "scenario": "lisbon-hotel-booking-limit",
+      "turns": 3,
+      "span_id": "e5c0db3693718f0d",
+      "label": "frustrated",
+      "expected": "frustrated",
+      "explanation": "The user asked the assistant to book a hotel and was told it can't. They answered with a sarcastic, complaining remark: \"What's the point of a travel assistant then.\" The assistant acknowledged the frustration but only restated its limits and offered more help. The user didn't say anything afterward to show they were satisfied, so they most likely left the conversation still frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-paris-missing-origin",
+      "scenario": "paris-missing-origin",
+      "turns": 3,
+      "span_id": "7592f7d923c5db40",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user gave the departure city and details when asked, got flight options, and picked one with a polite 'Thanks, the first option looks good.' They showed no complaints, repetition, sarcasm, or distrust. The assistant's closing was a bit passive, since it didn't book or offer a next step beyond 'ask me,' but nothing suggests the user was left frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-past-date-correction",
+      "scenario": "past-date-correction",
+      "turns": 3,
+      "span_id": "2739e73124b5ba19",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user's first request used a past date, which the assistant correctly flagged. The user corrected it, received flight options, and ended with \"Great, thank you.\" There was no complaining, sarcasm, repeated requests, or giving up, so the user was not left frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-portland-repeated-misunderstanding",
+      "scenario": "portland-repeated-misunderstanding",
+      "turns": 3,
+      "span_id": "05f3d3636a2f5143",
+      "label": "frustrated",
+      "expected": "frustrated",
+      "explanation": "The user repeated their request for PDX, expressed irritation (\"Why is this so hard?\"), and gave up by saying they'd use another site. The assistant could not help and the issue was never resolved, so the user left frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-rome-attractions",
+      "scenario": "rome-attractions",
+      "turns": 1,
+      "span_id": "f4967a808b0afc52",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user asked a single, clear question and the assistant gave a thorough, relevant list of top Rome attractions. The user showed no signs of frustration such as repeating the request, complaining, sarcasm, or giving up."
+    },
+    {
+      "session_id": "run-20261112T033521Z-seattle-lisbon-unrealistic-times",
+      "scenario": "seattle-lisbon-unrealistic-times",
+      "turns": 3,
+      "span_id": "4571a6c9fbb5ec94",
+      "label": "frustrated",
+      "expected": "frustrated",
+      "explanation": "The user questioned the flight data's plausibility, and the assistant first admitted the data was wrong, then gave inconsistent claims (the earlier options 'include stops' while also saying no nonstops exist). The user ended with 'I don't trust these results at all,' expressing clear distrust. The assistant never resolved the issue or restored confidence, so the user was left frustrated."
+    },
+    {
+      "session_id": "run-20261112T033521Z-sfo-lisbon-happy-path",
+      "scenario": "sfo-lisbon-happy-path",
+      "turns": 3,
+      "span_id": "2d5ac631336bd489",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user accepted the cheapest flight, asked a follow-up about Alfama, got a useful answer, and ended with 'Perfect, thanks for the help!' They showed no repetition, complaints, sarcasm, or distrust, so they left satisfied."
+    },
+    {
+      "session_id": "run-20261112T033521Z-sydney-cabin-comparison",
+      "scenario": "sydney-cabin-comparison",
+      "turns": 1,
+      "span_id": "8f5cf8326e54102f",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user made a single request and the assistant gave a complete comparison of economy and business fares. The user showed no repetition, complaints, sarcasm, distrust, or giving up, so there is no sign of frustration."
+    },
+    {
+      "session_id": "run-20261112T033521Z-tokyo-budget-too-low",
+      "scenario": "tokyo-budget-too-low",
+      "turns": 3,
+      "span_id": "3f0aecfe946b1986",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user showed mild frustration early (\"Ugh, nothing at all?\") when no flights under $200 were found. They then asked for the cheapest option, received results, and ended with \"Okay, that works. Thanks.\" That ending signals acceptance, not lingering frustration, so the earlier irritation was resolved."
+    },
+    {
+      "session_id": "run-20261112T033521Z-tokyo-weather",
+      "scenario": "tokyo-weather",
+      "turns": 1,
+      "span_id": "e951948b10816f2d",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user asked a straightforward question about Tokyo's April weather and cherry blossom season, and the assistant answered both parts. The user showed no repeated requests, complaints, sarcasm, distrust, or giving up, so there is no sign of frustration."
+    },
+    {
+      "session_id": "run-20261112T033521Z-warm-january-ideas",
+      "scenario": "warm-january-ideas",
+      "turns": 2,
+      "span_id": "fe3e8a6026132710",
+      "label": "ok",
+      "expected": "ok",
+      "explanation": "The user asked for warm destinations and then asked a follow-up about Lisbon's January weather. The assistant answered accurately and directly. The user shows no repeated requests, complaints, sarcasm, or distrust, and the conversation ends with the assistant's helpful answer. Nothing indicates frustration."
+    }
+  ],
+  "turns": [
+    {
+      "session_id": "run-20261112T033521Z-bali-unsupported-airport",
+      "scenario": "bali-unsupported-airport",
+      "turn": 2,
+      "span_id": "8617a6a490544747",
+      "user_message": "Seriously? You can't search Bali? It's one of the most popular destinations there is.",
+      "label": "friction",
+      "explanation": "The user responds with \"Seriously?\" and points out that Bali is a very popular destination, which expresses disappointment and impatience at the assistant's inability to search it. This is frustration directed at the assistant's preceding response."
+    },
+    {
+      "session_id": "run-20261112T033521Z-bali-unsupported-airport",
+      "scenario": "bali-unsupported-airport",
+      "turn": 3,
+      "span_id": "c07441da9ed94a2c",
+      "user_message": "This is useless. Forget it.",
+      "label": "friction",
+      "explanation": "The user says \"This is useless. Forget it.\" This expresses clear frustration and disappointment with the assistant's inability to search for Bali, going beyond simply declining the optional proposal."
+    },
+    {
+      "session_id": "run-20261112T033521Z-chicago-london-group-budget",
+      "scenario": "chicago-london-group-budget",
+      "turn": 2,
+      "span_id": "f4234c9631deefdc",
+      "user_message": "We need to keep it under $2,000 total for all four of us.",
+      "label": "no_friction",
+      "explanation": "All six options listed are already under $2,000 total, and the user is adding a budget constraint. It is a new constraint that builds on the results and does not say the assistant was wrong or failed. It was not given before, so it is not a re-asserted instruction. There is no negative affect."
+    },
+    {
+      "session_id": "run-20261112T033521Z-chicago-london-group-budget",
+      "scenario": "chicago-london-group-budget",
+      "turn": 3,
+      "span_id": "3c4928885dea706e",
+      "user_message": "Hmm, okay. What about under $3,000 total?",
+      "label": "no_friction",
+      "explanation": "The user changes their budget preference and asks for options under $3,000. The assistant's previous answer correctly filtered by the $2,000 budget, so this is a changed preference or refinement, not a correction. 'Hmm, okay' is mild and does not express dissatisfaction with the assistant's behavior."
+    },
+    {
+      "session_id": "run-20261112T033521Z-jfk-london-business-round-trip",
+      "scenario": "jfk-london-business-round-trip",
+      "turn": 2,
+      "span_id": "f20c421a3f4e0f4f",
+      "user_message": "Which of those is nonstop, and what's the total for both of us?",
+      "label": "no_friction",
+      "explanation": "The user asks a simple follow-up question about which option is nonstop and the total for two people. This is a request for clarification of already-delivered info, with no correction, frustration, or challenge expressed."
+    },
+    {
+      "session_id": "run-20261112T033521Z-lisbon-hotel-booking-limit",
+      "scenario": "lisbon-hotel-booking-limit",
+      "turn": 2,
+      "span_id": "6cad7d676340d62d",
+      "user_message": "Great, can you just book the first one for me for December 10 to 14?",
+      "label": "no_friction",
+      "explanation": "The user accepts the assistant's suggestions ('Great') and makes a new request to book the first hotel for specific dates. There is no correction, retry, frustration, or challenge of the assistant's earlier behavior."
+    },
+    {
+      "session_id": "run-20261112T033521Z-lisbon-hotel-booking-limit",
+      "scenario": "lisbon-hotel-booking-limit",
+      "turn": 3,
+      "span_id": "e5c0db3693718f0d",
+      "user_message": "So you can't actually book anything? What's the point of a travel assistant then.",
+      "label": "friction",
+      "explanation": "The user expresses disappointment and annoyance at the assistant's inability to book, questioning its usefulness (\"What's the point of a travel assistant then\"). This is negative affect directed at the assistant's behavior/capability, i.e., frustration."
+    },
+    {
+      "session_id": "run-20261112T033521Z-paris-missing-origin",
+      "scenario": "paris-missing-origin",
+      "turn": 2,
+      "span_id": "ff3c3ab34d1aad8f",
+      "user_message": "From Seattle, economy, just me.",
+      "label": "no_friction",
+      "explanation": "The user answers the assistant's clarifying question about departure city and adds helpful details (economy, solo traveler). There is no correction, retry, frustration, or challenge."
+    },
+    {
+      "session_id": "run-20261112T033521Z-paris-missing-origin",
+      "scenario": "paris-missing-origin",
+      "turn": 3,
+      "span_id": "7592f7d923c5db40",
+      "user_message": "Thanks, the first option looks good.",
+      "label": "no_friction",
+      "explanation": "The user thanks the assistant and picks the first option. This is acceptance with no correction, retry, frustration, or challenge."
+    },
+    {
+      "session_id": "run-20261112T033521Z-past-date-correction",
+      "scenario": "past-date-correction",
+      "turn": 2,
+      "span_id": "7a4210e95de4949e",
+      "user_message": "Oh, I meant March 3, 2027.",
+      "label": "no_friction",
+      "explanation": "The user supplies a corrected date in response to the assistant's request for a future date. It is a direct answer that fixes their own mistake, and it expresses no dissatisfaction with the assistant."
+    },
+    {
+      "session_id": "run-20261112T033521Z-past-date-correction",
+      "scenario": "past-date-correction",
+      "turn": 3,
+      "span_id": "2739e73124b5ba19",
+      "user_message": "Great, thank you.",
+      "label": "no_friction",
+      "explanation": "The user says 'Great, thank you,' which is gratitude and acknowledgement with no correction, retry, frustration, or challenge toward the assistant's flight options."
+    },
+    {
+      "session_id": "run-20261112T033521Z-portland-repeated-misunderstanding",
+      "scenario": "portland-repeated-misunderstanding",
+      "turn": 2,
+      "span_id": "5fcf435cc789404f",
+      "user_message": "Portland, Oregon. PDX. I want to fly out of PDX.",
+      "label": "friction",
+      "explanation": "The assistant already identified PDX and said no data was available, then suggested SEA. The user restates 'I want to fly out of PDX', re-asserting their constraint and rejecting the alternative. The clarification of 'Portland, Oregon' suggests the user thinks the assistant may have misunderstood, and the insistence on PDX pushes back on the suggestion. This reads as a mild correction/retry, though it could also be seen as declining an optional proposal. The emphatic re-assertion after the assistant failed to deliver tips toward friction."
+    },
+    {
+      "session_id": "run-20261112T033521Z-portland-repeated-misunderstanding",
+      "scenario": "portland-repeated-misunderstanding",
+      "turn": 3,
+      "span_id": "05f3d3636a2f5143",
+      "user_message": "I already told you, PDX! Why is this so hard? I'll just use another site.",
+      "label": "friction",
+      "explanation": "The user repeats their constraint (PDX) after the assistant failed to accommodate it, and expresses clear frustration (\"Why is this so hard?\") and is giving up. This is correction, retry and frustration directed at the assistant's behavior."
+    },
+    {
+      "session_id": "run-20261112T033521Z-seattle-lisbon-unrealistic-times",
+      "scenario": "seattle-lisbon-unrealistic-times",
+      "turn": 2,
+      "span_id": "eb932578932a9c82",
+      "user_message": "A nonstop from Seattle to Lisbon in that little time? That can't be right. Are these real flights?",
+      "label": "no_friction",
+      "explanation": "The user is skeptical about the flight data and asks whether the flights are real. Under the rubric, requests for evidence or skeptical questions about a claim remain no_friction unless the user explicitly says the answer is wrong, fabricated, or unacceptable. \"That can't be right\" comes close to saying the answer is wrong, but it is hedged by a verification question (\"Are these real flights?\"). The message reads as doubt and verification rather than an explicit declaration that the answer is wrong. Given the ambiguity, no_friction is the safer label."
+    },
+    {
+      "session_id": "run-20261112T033521Z-seattle-lisbon-unrealistic-times",
+      "scenario": "seattle-lisbon-unrealistic-times",
+      "turn": 3,
+      "span_id": "4571a6c9fbb5ec94",
+      "user_message": "I don't trust these results at all.",
+      "label": "friction",
+      "explanation": "The user says they don't trust the results at all, which expresses disappointment and dissatisfaction with the assistant's flawed flight data and its inconsistent explanation. This is negative affect aimed at the assistant's behavior, so it counts as frustration rather than a neutral verification question."
+    },
+    {
+      "session_id": "run-20261112T033521Z-sfo-lisbon-happy-path",
+      "scenario": "sfo-lisbon-happy-path",
+      "turn": 2,
+      "span_id": "feab1c9002026f15",
+      "user_message": "Great, the cheapest one works. What should I see in the Alfama neighborhood?",
+      "label": "no_friction",
+      "explanation": "The user accepts the cheapest flight option and moves on to a new question about Alfama. There is no correction, retry, frustration, or challenge."
+    },
+    {
+      "session_id": "run-20261112T033521Z-sfo-lisbon-happy-path",
+      "scenario": "sfo-lisbon-happy-path",
+      "turn": 3,
+      "span_id": "2d5ac631336bd489",
+      "user_message": "Perfect, thanks for the help!",
+      "label": "no_friction",
+      "explanation": "The user expresses gratitude and satisfaction (\"Perfect, thanks for the help!\"), with no correction, retry, frustration, or challenge."
+    },
+    {
+      "session_id": "run-20261112T033521Z-tokyo-budget-too-low",
+      "scenario": "tokyo-budget-too-low",
+      "turn": 2,
+      "span_id": "fb1d0fcb430d73f3",
+      "user_message": "Ugh, nothing at all? Fine, what's the cheapest option then?",
+      "label": "no_friction",
+      "explanation": "The user says \"Ugh, nothing at all?\" which shows mild disappointment, but it is aimed at the unfavorable search result rather than at anything the assistant did wrong. The assistant reported availability honestly and offered an alternative. The user then accepts and asks a follow-up (cheapest option). This is a refinement building on the response, not a correction, retry, or challenge of assistant behavior. The ambiguity favors no_friction."
+    },
+    {
+      "session_id": "run-20261112T033521Z-tokyo-budget-too-low",
+      "scenario": "tokyo-budget-too-low",
+      "turn": 3,
+      "span_id": "3f0aecfe946b1986",
+      "user_message": "Okay, that works. Thanks.",
+      "label": "no_friction",
+      "explanation": "The user accepts the results and thanks the assistant. There is no correction, retry, frustration, or challenge, so this is ordinary acknowledgement and gratitude."
+    },
+    {
+      "session_id": "run-20261112T033521Z-warm-january-ideas",
+      "scenario": "warm-january-ideas",
+      "turn": 2,
+      "span_id": "fe3e8a6026132710",
+      "user_message": "Lisbon sounds nice. How warm is it there in January?",
+      "label": "no_friction",
+      "explanation": "The user brings up Lisbon, a new destination the assistant did not list, and asks a follow-up about its January weather. There is no correction, retry, frustration, or challenge toward the assistant's suggestions. It is a refinement and new question."
+    }
+  ]
+}

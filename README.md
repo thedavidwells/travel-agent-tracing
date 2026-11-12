@@ -128,6 +128,39 @@ The committed export `exports/spans_run_20261112T033521Z.json` holds 400 spans f
 - **One question can trigger several tool calls.** "Compare economy and business" made two `search_flights` calls, one for each cabin.
 - **Relative dates are ambiguous.** On Wednesday, Nov 11, "next Friday" was resolved to Nov 20, not Nov 13.
 
+## Evaluating User Frustration
+
+With Phoenix running and a trace run recorded, run:
+
+```bash
+poetry run python scripts/evaluate_frustration.py            # latest run in exports/
+poetry run python scripts/evaluate_frustration.py --run-id 20261112T033521Z
+```
+
+The script uses Phoenix Evals (`arize-phoenix-evals`) and the Phoenix client (`arize-phoenix-client`). It needs no tracing changes in the app because it reads everything it needs from the spans already in Phoenix.
+
+### Methodology
+
+1. **Rebuild the conversations from spans.** The script pulls the run's spans from Phoenix and groups them by `session.id`. Each trace is one turn. The user message comes from the first LLM span's `llm.input_messages` and the assistant reply from the last LLM span's `llm.output_messages`. Ordering turns by start time gives a `User:` / `Assistant:` transcript for each session.
+2. **Judge the whole session for frustration.** Frustration is a property of the conversation, not of one LLM call. A single reply like "No flights found" can be fine, and the frustration only shows when the user says "This is useless. Forget it." The `user_frustration` evaluator is a Phoenix Evals `ClassificationEvaluator` with labels `frustrated` (score 1) and `ok` (score 0). Its prompt is adapted from Phoenix's user frustration template and keeps that template's key rule: if the user was frustrated earlier but satisfied by the end, they are not frustrated. The judge also writes an explanation.
+3. **Judge each follow-up turn for friction.** Phoenix's pre-built `UserFrictionEvaluator` labels whether a user message pushes back on the assistant's previous reply. It runs on every turn after the first, with the earlier transcript as context. This shows where in a conversation things went wrong.
+4. **Use a different model as the judge.** The agent runs on GPT-4o. With `AI_GATEWAY_API_KEY` set, the judge is `anthropic/claude-sonnet-5.5` through the same gateway. With only `OPENAI_API_KEY`, it is `gpt-4.1`. Override it with `--judge-model`. A judge from another model family is less likely to share the agent's blind spots.
+5. **Attach results to spans.** `user_frustration` is logged as a span annotation on the root `LangGraph` span of each session's final turn, because that is where the outcome is known. It is also logged as a session annotation for the Sessions view. `user_friction` is logged on the root span of each judged turn. Every annotation has a label, a score and the judge's explanation.
+6. **Build a dataset of frustrated interactions.** The script queries Phoenix with the span filter `annotations['user_frustration'].label == 'frustrated'` and creates the dataset `frustrated-interactions-<run_id>`. Each example has the conversation and final user message as input, the agent's final reply as output, and the session, scenario and judge explanation as metadata. Each example links back to its source span.
+7. **Check the judge.** The scripted conversations were written to produce known outcomes, so the script compares the judge's labels against them. Results are written to `exports/eval_<run_id>.json`.
+
+### Results for run `20261112T033521Z`
+
+The session judge agreed with the designed label on all 14 sessions. Four were labeled `frustrated`: the unsupported Bali airport, the repeated PDX misunderstanding, the hotel booking request, and the distrusted Seattle to Lisbon results. The Tokyo budget conversation was correctly labeled `ok`. The user said "Ugh, nothing at all?" but ended with "Okay, that works. Thanks.", and the judge's explanation cites that recovery. The friction judge flagged 6 of the 20 follow-up turns, all inside the four frustrated sessions.
+
+Fourteen scripted sessions are enough to show the workflow, not to measure judge accuracy. Production use would need a larger, human-labeled sample to measure precision and recall before trusting the labels.
+
+### Viewing results in Phoenix
+
+- **Spans:** in the `travel-agent` project, filter spans with `annotations['user_frustration'].label == 'frustrated'`. Selecting a span shows the annotation and the judge's explanation in the Annotations tab.
+- **Datasets:** the `frustrated-interactions-<run_id>` dataset holds the four examples. From the span filter above you can also select spans and use **Add to dataset** to build a dataset by hand.
+- **Sessions:** the Sessions tab shows each conversation with its `user_frustration` session annotation.
+
 ## Project Structure
 
 ```
@@ -139,6 +172,10 @@ se-interview/
 ├── agent.py             # LangGraph agent implementation
 ├── api.py               # FastAPI server and Phoenix tracing setup
 ├── flights.py           # search_flights tool (structured mock flight search)
+├── scripts/
+│   ├── run_queries.py           # Scripted conversations that generate traces
+│   └── evaluate_frustration.py  # User frustration evals, span annotations, dataset
+├── exports/             # Run manifests, exported spans, and eval results
 └── tests/
     └── test_flights.py  # Unit tests for the flight search tool
 ```
