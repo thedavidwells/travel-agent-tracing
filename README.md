@@ -34,9 +34,21 @@ With a Vercel AI Gateway key, it routes through the gateway instead. If both are
 AI_GATEWAY_API_KEY=your_actual_api_key
 ```
 
+## Running Phoenix
+
+Start Phoenix with Docker. Traces are stored in the `phoenix_data` volume, so they survive restarts:
+
+```bash
+docker compose up -d
+```
+
+The Phoenix UI is at `http://localhost:6006`. Authentication is disabled in `docker-compose.yml` for local development. The agent sends its traces to the `travel-agent` project.
+
+Use `docker compose down` to stop Phoenix and keep your traces. `docker compose down -v` deletes them.
+
 ## Running the API
 
-Start the FastAPI server:
+Start Phoenix first, then start the FastAPI server:
 
 ```bash
 poetry run uvicorn api:app --reload

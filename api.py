@@ -1,10 +1,15 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from langchain_core.messages import HumanMessage
+from phoenix.otel import register
 from pydantic import BaseModel
-from agent import build_agent
 
 load_dotenv()
+
+# Must run before the agent module is imported so LangChain is instrumented.
+tracer_provider = register(project_name="travel-agent", auto_instrument=True)
+
+from agent import build_agent  # noqa: E402
 
 agent = build_agent()
 
