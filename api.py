@@ -1,7 +1,9 @@
+import uuid
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from langchain_core.messages import HumanMessage
-from phoenix.otel import register
+from phoenix.otel import register, using_session
 from pydantic import BaseModel
 
 load_dotenv()
@@ -22,17 +24,27 @@ app = FastAPI(
 
 class ChatRequest(BaseModel):
     message: str
+    session_id: str | None = None
 
 
 class ChatResponse(BaseModel):
     response: str
+    session_id: str
 
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
-    """Send a message to the agent and get a response."""
-    result = agent.invoke({"messages": [HumanMessage(content=request.message)]})
-    return ChatResponse(response=result["messages"][-1].content)
+    """Send a message to the agent and get a response.
+
+    Pass the returned session_id on later requests to continue the same conversation.
+    """
+    session_id = request.session_id or str(uuid.uuid4())
+    with using_session(session_id):
+        result = agent.invoke(
+            {"messages": [HumanMessage(content=request.message)]},
+            config={"configurable": {"thread_id": session_id}},
+        )
+    return ChatResponse(response=result["messages"][-1].content, session_id=session_id)
 
 
 @app.get("/health")

@@ -74,8 +74,17 @@ curl -X POST http://localhost:8000/chat \
 
 ```json
 {
-  "response": "Based on my search, here are the latest developments in AI..."
+  "response": "Based on my search, here are the latest developments in AI...",
+  "session_id": "4f4016bb-3849-4a95-a7bd-989bbeb53867"
 }
+```
+
+To continue the same conversation, send the returned `session_id` with the next message. The agent remembers earlier turns in that session, and Phoenix groups them in the project's Sessions tab. Conversation memory is held in the server process, so it is cleared when the server restarts.
+
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What about hotels there?", "session_id": "4f4016bb-3849-4a95-a7bd-989bbeb53867"}'
 ```
 
 ### GET /health
