@@ -6,7 +6,7 @@ A simple LangGraph agent that can search the web using DuckDuckGo, exposed via a
 
 - Python 3.11+
 - [Poetry](https://python-poetry.org/docs/#installation)
-- Vercel AI Gateway API key
+- An OpenAI API key or a Vercel AI Gateway API key
 
 ## Setup
 
@@ -22,7 +22,13 @@ poetry install
 cp .env.example .env
 ```
 
-3. Add your Vercel AI Gateway API key to the `.env` file, without quotes:
+3. Add one API key to the `.env` file, without quotes. With an OpenAI key, the agent calls OpenAI directly:
+
+```
+OPENAI_API_KEY=your_actual_api_key
+```
+
+With a Vercel AI Gateway key, it routes through the gateway instead. If both are set, the gateway key is used:
 
 ```
 AI_GATEWAY_API_KEY=your_actual_api_key
@@ -83,7 +89,7 @@ se-interview/
 ## How It Works
 
 1. The agent receives a user message via the `/chat` endpoint
-2. It calls `openai/gpt-4o` through the Vercel AI Gateway, with DuckDuckGo search available as a tool
+2. It calls GPT-4o (directly or through the Vercel AI Gateway) with the message and available tools (DuckDuckGo search)
 3. If the LLM decides to search, it executes the search and feeds results back
 4. The loop continues until the LLM provides a final response
 5. The response is returned to the user
