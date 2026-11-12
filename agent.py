@@ -1,4 +1,5 @@
 import operator
+import os
 from typing import Annotated, Literal
 
 from dotenv import load_dotenv
@@ -14,7 +15,12 @@ search_tool = DuckDuckGoSearchRun()
 tools = [search_tool]
 tools_by_name = {tool.name: tool for tool in tools}
 
-model = ChatOpenAI(model="gpt-4o", temperature=0)
+model = ChatOpenAI(
+    model="openai/gpt-4o",
+    temperature=0,
+    api_key=os.environ["AI_GATEWAY_API_KEY"],
+    base_url="https://ai-gateway.vercel.sh/v1",
+)
 model_with_tools = model.bind_tools(tools)
 
 
