@@ -46,6 +46,17 @@ The Phoenix UI is at `http://localhost:6006`. Authentication is disabled in `doc
 
 Use `docker compose down` to stop Phoenix and keep your traces. `docker compose down -v` deletes them.
 
+### Phoenix CLI and skills
+
+I used the Phoenix CLI (`px`) and the Phoenix agent skills throughout this project to check traces from the terminal and give my coding agent Phoenix-aware context:
+
+```bash
+npx skills add Arize-ai/phoenix --skill phoenix-cli
+px setup --no-input --endpoint http://localhost:6006 --project travel-agent
+px trace list
+px session get <session_id>
+```
+
 ## Running the API
 
 Start Phoenix first, then start the FastAPI server:
@@ -109,7 +120,9 @@ With Phoenix and the API running, run the scripted conversations:
 poetry run python scripts/run_queries.py
 ```
 
-The script sends 14 conversations (34 queries) through `/chat`. Each conversation uses its own session id, `run-<run_id>-<name>`, so it appears as one session in Phoenix. User turns are fixed in advance and do not react to the agent's replies. Some conversations are written to succeed and some to hit the agent's limits (unsupported airports, a budget below every fare, a request to book a hotel), so the user frustration evaluation has both outcomes to classify. A manifest of the run, with every turn and reply, is written to `exports/run_<run_id>.json`.
+The script sends 14 conversations (34 queries) through `/chat`. Each conversation uses its own session id, `run-<run_id>-<name>`, so it appears as one session in Phoenix. Some conversations are written to succeed and some to hit the agent's limits (unsupported airports, a budget below every fare, a request to book a hotel), so the user frustration evaluation has both outcomes to classify. A manifest of the run, with every turn and reply, is written to `exports/run_<run_id>.json`.
+
+**These are synthetic users.** I wrote every conversation in `scripts/run_queries.py`, and the user turns are fixed in advance, so they don't react to what the agent actually says. That's on purpose: it makes runs repeatable and lets me plant known failures. The tradeoff is that real users phrase things differently, give up sooner or later, and hit failures I didn't think to script.
 
 Export the run's spans with the Phoenix CLI. `px` reads its endpoint and project from `.env.phoenix`, which `px setup` creates:
 
@@ -155,11 +168,29 @@ The session judge agreed with the designed label on all 14 sessions. Four were l
 
 Fourteen scripted sessions are enough to show the workflow, not to measure judge accuracy. Production use would need a larger, human-labeled sample to measure precision and recall before trusting the labels.
 
+**Hand labels.** The 14/14 agreement above is against labels I designed, so it mostly shows the judge read the scripts the way I meant them. As a separate check, I read 6 sessions cold, labeled them myself before looking at the judge, and agreed with it on 5 of 6. The one we disagreed on was the warm-January session. I labeled it frustrated because the agent suggested Florida and the Caribbean to someone asking for ideas from the West Coast. The user never pushed back, so the judge said ok, and by the template's rule that's correct. It shows the limit of a frustration eval: it measures how the user reacted, not whether the answer was good. A relevance or correctness eval would catch this.
+
 ### Viewing results in Phoenix
 
 - **Spans:** in the `travel-agent` project, filter spans with `annotations['user_frustration'].label == 'frustrated'`. Selecting a span shows the annotation and the judge's explanation in the Annotations tab.
 - **Datasets:** the `frustrated-interactions-<run_id>` dataset holds the four examples. From the span filter above you can also select spans and use **Add to dataset** to build a dataset by hand.
 - **Sessions:** the Sessions tab shows each conversation with its `user_frustration` session annotation.
+
+## Limitations
+
+- **Synthetic users.** The conversations are scripted, so the user turns never adapt to the agent. A real eval would sample production sessions.
+- **Small sample.** 14 sessions is enough to show the workflow (trace, evaluate, annotate, build a dataset), not to measure judge precision or recall.
+- **"ok" doesn't mean satisfied.** The judge only says the user wasn't left frustrated. A user who quietly leaves after a bad answer would likely score `ok`.
+- **Mock flight data.** Prices and durations are deterministic but not based on distance, so some flights are unrealistic (a four-hour nonstop from SFO to Lisbon). One frustrated session exists because of this.
+- **In-memory sessions.** `MemorySaver` loses conversation history when the API restarts. Production would use a persistent checkpointer like SQLite or Postgres.
+- **One judge, one prompt.** Before trusting it in production, I'd check it against a larger set of human labels and watch for drift when the prompt or model changes.
+
+## What I'd Do Next
+
+- Fix the two grounding issues the traces surfaced: list the supported airports in the `search_flights` description, and tell the agent not to override tool results with its own knowledge.
+- Re-run the `frustrated-interactions-<run_id>` dataset as a Phoenix experiment after each fix, so a change has to beat the old version on the same failing cases.
+- Add a tool-calling correctness eval (right tool, right arguments) and an answer relevance eval to cover the other components of the agent.
+- Swap the scripted users for an LLM-driven simulated user, and then for sampled real sessions.
 
 ## Project Structure
 
